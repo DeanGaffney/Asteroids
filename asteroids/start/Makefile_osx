@@ -1,0 +1,40 @@
+# OS X Makefile 
+
+# Game specific settings
+GAME 	= asteroids
+SRC 	= $(wildcard *.cpp) \
+	../../common/core.cpp ../../common/core_glfw.cpp \
+	../../common/Vector2f.cpp ../../common/math.cpp
+
+
+# 
+TARGET = $(GAME)
+CPPFLAGS = -c -g -O2 -Wall -Wextra -I../../glfw/include -I/opt/local/include
+
+LDLIBS   = -L/opt/X11/lib ../../glfw/lib/cocoa/libglfw.a \
+	-lm -lglut \
+ 	-framework Cocoa -framework OpenGL -framework IOKit
+
+LFLAGS   = 
+
+OBJS	= $(subst .cpp,.o,$(SRC))
+
+default: $(TARGET)
+
+run: $(TARGET)
+	./$(TARGET)
+
+clean:
+	rm -f $(TARGET) *.o *~ *.bak deps.mak
+
+$(TARGET): $(OBJS)
+	g++ $(LFLAGS) $(OBJS) $(LDLIBS) -o $(TARGET) 
+
+-include deps.mak
+
+deps deps.mak:
+	g++ -I../../glfw/include -I/opt/local/include  -I../../common -MM $(SRC) > deps.mak
+
+zip: 
+	zip $(TARGET).zip $(SRC) *.h	
+	
