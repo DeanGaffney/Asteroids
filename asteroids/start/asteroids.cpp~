@@ -143,7 +143,7 @@ bool checkBulletAsteroidCollision(const Vector2f point,const Asteroid & asteroid
 bool lineSegmentsIntersect(const Vector2f p, const Vector2f a, const Vector2f, const Vector2f u, const Vector2f v){
 	/*
 		MAKE SIMPLE TEST (lineSegemntInterSect(point(0,1), point(0,-1), point (-1,0), point(1,0))) t = half and s = half
-						 also try ()
+		
 		return true iff line segments a-p and u-v intersect
 		
 		calculate t

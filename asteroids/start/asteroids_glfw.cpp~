@@ -48,6 +48,7 @@ void Bullet::render() {
 	glTranslatef(position.x, position.y, 0);
 	glRotatef(angle, 0,0,1);
 	glScalef(0.04, 0.04, 1);
+	printf("angle = %f\n", angle);
 
 	glBegin(GL_QUADS);		
 		glVertex3f(0, 0, 0);

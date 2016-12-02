@@ -31,9 +31,9 @@ extern const float MAX_FLOAT;   		///< Maximum value represented using 32-bit fl
 
 extern const float EPSILON;             ///< Limit of precision (when compared to unity)
 
-/*float atan2f(float y, float x){
+float atan2f(float y, float x){
 	return atan2f(y,x);
-}*/
+}
 
 // ===============================================
 // Power like functions
