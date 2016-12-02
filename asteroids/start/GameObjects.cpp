@@ -23,6 +23,7 @@ void BaseGameObject::reset() {
 	angle = 0;
 	angularVelocity = 0;
 	damping = 1;
+	radius = 1;
 }
 
 
@@ -106,14 +107,19 @@ void Asteroid::reset() {
 	// TODO - random rotation angle 
 	angularVelocity = randomFloat(-100,100);
 	
-	//set enum index
-	enumIndex = getEnumIndex();
-	size = sizes[enumIndex];
+	angle = randomFloat(1,360);
+	
+	//random velocity based off random angle
+	velocity = Vector2f(cos(degToRad(angle)),sin(degToRad(angle))).normal() * randomFloat(ASTEROID_MIN_SPEED,ASTEROID_MAX_SPEED);
 }
 
 void Asteroid::update(float dt) {
 	BaseGameObject::update(dt);
-	
+	//see if need to wrap game object
+	if(position.x > ASPECT)position.x = 0.1;
+	else if(position.x < 0) position.x = ASPECT - 0.1;
+	else if(position.y > 1)position.y = 0.1;
+	else if(position.y < 0)position.y = 0.9;
 }
 
 int Asteroid::getEnumIndex(){

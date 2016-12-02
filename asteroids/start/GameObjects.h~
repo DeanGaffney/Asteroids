@@ -32,6 +32,7 @@ public:
 	virtual void render() = 0;
 	virtual void update(float dt);
 	virtual void reset();
+	float radius;					//used for circle collision detection
 };
 
 // ======================================
@@ -42,6 +43,7 @@ class Ship: public BaseGameObject {
 	float timeToFire;
 	int health;
 	int bulletsRemaining;
+
 public:
 	bool fire;
 	void render();

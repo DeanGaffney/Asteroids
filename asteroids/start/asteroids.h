@@ -16,7 +16,7 @@
 
 const float SPEED = 0.1f;
 const float SHIP_MAX_ANGULAR_VELOCITY = 120.0f*SPEED;
-const float SHIP_MAX_ACCELERATION = 5.0f*SPEED;
+const float SHIP_MAX_ACCELERATION = 2.0f*SPEED;
 const float SHIP_MAX_SPEED = 1.5f*SPEED;
 const float SHIP_FIRE_DELAY = 2.0f;
 
@@ -33,6 +33,9 @@ extern BulletPool bullets;
 extern AsteroidPool asteroids;
 
 bool checkBulletAsteroidCollision(const Vector2f point,const Asteroid & asteroid);
-bool lineSegmentsIntersect(const Vector2f p, const Vector2f a,const Vector2f u, const Vector2f v);
+bool isPointInsideCircle(const Vector2f point,const Vector2f center,const float radius);
 void cullObjects();
+void checkCollisions();
+void destroyAsteroid(Asteroid & asteroid,const int index);
+void createAsteroid(const Vector2f position,const int type);
 #endif

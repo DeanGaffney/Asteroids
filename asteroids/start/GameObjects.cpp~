@@ -23,6 +23,7 @@ void BaseGameObject::reset() {
 	angle = 0;
 	angularVelocity = 0;
 	damping = 1;
+	radius = 1;
 }
 
 
@@ -53,7 +54,6 @@ void Ship::update(float dt) {
 	if(fire && timeToFire <= 0 && bulletsRemaining > 0){
 		timeToFire = SHIP_FIRE_DELAY;
 		bulletsRemaining--;
-		printf("Bullets Remaining %d\n",bulletsRemaining);
 		
 		Bullet & bullet = bullets.allocate();
 		bullet.reset();
@@ -107,9 +107,10 @@ void Asteroid::reset() {
 	// TODO - random rotation angle 
 	angularVelocity = randomFloat(-100,100);
 	
-	//set enum index
-	enumIndex = getEnumIndex();
-	size = sizes[enumIndex];
+	angle = randomFloat(1,360);
+	
+	//random velocity based off random angle
+	velocity = Vector2f(cos(degToRad(angle)),sin(degToRad(angle))).normal() * randomFloat(ASTEROID_MIN_SPEED,ASTEROID_MAX_SPEED);
 }
 
 void Asteroid::update(float dt) {

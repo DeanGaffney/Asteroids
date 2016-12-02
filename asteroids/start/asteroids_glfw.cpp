@@ -70,7 +70,7 @@ void Asteroid::render () {
 		}
     glEnd();
 
-	drawCircle();
+	drawCircle(Vector2f::ZERO,size);
 
 	glPopMatrix();	
 }

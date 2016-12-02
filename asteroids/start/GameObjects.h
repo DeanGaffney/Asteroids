@@ -32,6 +32,8 @@ public:
 	virtual void render() = 0;
 	virtual void update(float dt);
 	virtual void reset();
+	float radius;					//used for circle collision detection
+	float invincibilityTime;		//used for powerups and not destroying newly spawned asteroids
 };
 
 // ======================================
@@ -42,6 +44,7 @@ class Ship: public BaseGameObject {
 	float timeToFire;
 	int health;
 	int bulletsRemaining;
+
 public:
 	bool fire;
 	void render();
