@@ -53,7 +53,6 @@ void Ship::update(float dt) {
 	if(fire && timeToFire <= 0 && bulletsRemaining > 0){
 		timeToFire = SHIP_FIRE_DELAY;
 		bulletsRemaining--;
-		printf("Bullets Remaining %d\n",bulletsRemaining);
 		
 		Bullet & bullet = bullets.allocate();
 		bullet.reset();

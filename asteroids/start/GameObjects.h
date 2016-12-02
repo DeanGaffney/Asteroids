@@ -76,7 +76,7 @@ public:
 	  
 	float size;
 	Vector2f vertices[ASTEROID_GRANULARITY];
-	Vector2f angles[ASTEROID_GRANULARITY];
+	float angles[ASTEROID_GRANULARITY];
 	void render();
 	void reset();
 	void update(float dt);

@@ -33,6 +33,6 @@ extern BulletPool bullets;
 extern AsteroidPool asteroids;
 
 bool checkBulletAsteroidCollision(const Vector2f point,const Asteroid & asteroid);
-bool lineSegmentsIntersect(const Vector2f p, const Vector2f a, const Vector2f, const Vector2f u, const Vector2f v);
+bool lineSegmentsIntersect(const Vector2f p, const Vector2f a,const Vector2f u, const Vector2f v);
 void cullObjects();
 #endif
