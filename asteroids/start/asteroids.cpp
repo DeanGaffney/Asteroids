@@ -90,23 +90,6 @@ void update() {
 	for(int k = 0; k < bullets.size(); k++)bullets[k].update(dt);
 	// TODO - check collisions bullets-asteroids
 
-	// TODO - check collisions ship-asteroids
-	/*if(lineSegmentsIntersect(Vector2f(0,1),Vector2f(0,-1),Vector2f(-1,0),Vector2f(1,0))){
-		printf("Checking basic T shape graph");
-	}
-	if(lineSegmentsIntersect(Vector2f(-5,5),Vector2f(10,5),Vector2f(5,-5),Vector2f(5,10))){
-		printf("Checking basic T shape graph");
-	}*/
-/*for(int j = 0; j < bullets.size(); j++){
-	for(int k = 0; k < asteroids.size();k++){
-		if(checkBulletAsteroidCollision(bullets[j].position,asteroids[k])){printf("Bullet hit asteroid\n");}
-	}
-}*/
-	for(int k = 0; k < asteroids.size();k++){
-		if(checkBulletAsteroidCollision(ship.position,asteroids[k])){printf("Ship hit asteroid with ship position: %f,%f\n and asteroid position:%f,%f\n",ship.position.x,ship.position.y,asteroids[k].position.x,asteroids[k].position.y);}
-	}
-
-	
 	// TODO - update asteroids
 	// If asteroids hit (state=dead) then generate two (or better random) number of smaller asteroids
 	// new asteroids move off at random direction and rotation
@@ -138,29 +121,4 @@ bool checkBulletAsteroidCollision(const Vector2f point,const Asteroid & asteroid
 	return lineSegmentsIntersect(point,asteroid.position,u,v);
 }
 
-bool lineSegmentsIntersect(const Vector2f p, const Vector2f a,const Vector2f u, const Vector2f v){
-	/*
-		MAKE SIMPLE TEST (lineSegemntInterSect(point(0,1), point(0,-1), point (-1,0), point(1,0))) t = half and s = half
-						 also try ()
-		return true iff line segments a-p and u-v intersect
-		
-		calculate t
-			float t = (p.y-a.y) * (v.x-a.x) - (p.x-a.x) * (v.y-a.y)/ (p.y-a.y) * (v.x - u.x) - (p.x - a.x) * (v.y - u.y);
-			print (t)
-			
-			if(t < 0 || t > 1)return false;
-			
-		calculate s iff t is between 0 and 1
-			float s = (abs(p.x-a.x) > abs(p.y-a.y)) ? (v.x-a.x)-(v.x-u.x)/p.x-a.x) : ((v.y-a.y - a.y-v.y) * t)/(p.y-a.y)
-			print (s)
-			return (0<=s && s<=1);
-	
-	*/
-	float t = ((p.y-a.y) * (v.x-a.x) - (p.x-a.x) * (v.y-a.y)) / ((p.y-a.y) * (v.x - u.x) - (p.x - a.x) * (v.y - u.y));
-	//printf("Printing t from lineSeg method : %.2f\n",t);
-	if(t < 0 || t > 1)return false;
-	float s = (std::abs(p.x-a.x) > std::abs(p.y-a.y)) ? ((v.x-a.x)-(v.x-u.x) / (p.x-a.x)) : ((v.y-a.y - a.y-v.y) * t)/(p.y-a.y);
-	//printf("Printing s from lineSeg method : %.2f\n",s);
-	return (s >= 0 && s <= 1);
-}
-
+//shouldnt be in polygon branch
