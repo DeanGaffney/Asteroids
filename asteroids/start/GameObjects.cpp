@@ -69,41 +69,55 @@ void Ship::update(float dt) {
 	BaseGameObject::update(dt);
 
 	if(autoNavigation){
-		ship.fire = true;
-		
-		//FIGHT ASTEROIDS
-		if(activity == Ship::FIGHT && !asteroids.isEmpty()){
-			//printf("Ship is fighting\n");
-		//the reason i use index 0 is becasue the Pool class will always replace a dead index so 0 will always be used unless all asteroids are destroyed
-			float angleToRotate = atan2f(asteroids[0].position.y - position.y,asteroids[0].position.x - position.x);
-			angle = radToDeg(angleToRotate);
-			if(isAllowedFire())fireBullet();
-			else timeToFire -= dt;
-			
-			if(bulletsRemaining <= 5 && !powerups.isEmpty())activity = Ship::AMMO;
-			else if(health <= SHIP_MAX_HEALTH / 2 && !powerups.isEmpty())activity = Ship::HEALTH;
+		fire = true;
+		switch(activity){
+			//FIGHT ASTEROIDS
+			case(FIGHT):{
+				if(asteroids.isEmpty()){activity = Ship::WAIT;break;}
+				if(bulletsRemaining < 5){activity = Ship::AMMO;break;}
+				if(health < SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
+				printf("Ship is fighting\n");
+				//the reason i use index 0 is becasue the Pool class will always replace a dead index so 0 will always be used unless all asteroids are destroyed
+				float angleToRotate = atan2f(asteroids[0].position.y - position.y,asteroids[0].position.x - position.x);
+				angle = radToDeg(angleToRotate);
+				if(isAllowedFire())fireBullet();
+				else timeToFire -= dt;
+				break;
 			
 			//SCAVENGE AMMO
-		}else if(activity == Ship::AMMO){
-			printf("Ship is searching for ammo\n");
-			printf("Bullets remaining: %d\n",bulletsRemaining);
-			angle = getAngleToPowerup(Ship::AMMO);
-			printf("Angle to rotate to ammo is : %f\n",angle);
-			if(isAllowedFire())fireBullet();
-			else timeToFire -= dt;
-			if(bulletsRemaining > 5)activity = Ship::FIGHT;
-			else if(health <= SHIP_MAX_HEALTH / 2 && !powerups.isEmpty())activity = Ship::HEALTH;
+			}case(AMMO):{
+				if(powerups.isEmpty()){activity = Ship::WAIT;break;}
+				if(bulletsRemaining > 5){activity = Ship::FIGHT;break;}
+				if(health <= SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
+
+				printf("Ship is searching for ammo\n");
+				printf("Bullets remaining: %d\n",bulletsRemaining);
+				angle = getAngleToPowerup(Ship::AMMO);
+				printf("Angle to rotate to ammo is : %f\n",angle);
+				if(isAllowedFire())fireBullet();
+				else timeToFire -= dt;
+				break;
 			
 			//SCAVENGE HEALTH
-		}else if(activity == Ship::HEALTH){
-			printf("Ship is searching for health\n");
-			angle = getAngleToPowerup(Ship::HEALTH);
-			if(isAllowedFire())fireBullet();
-			else timeToFire -= dt;
-			if(health > SHIP_MAX_HEALTH / 2)activity = Ship::FIGHT;
-			else if(bulletsRemaining <= 5 && !powerups.isEmpty())activity = Ship::AMMO;			
+			}case(HEALTH):{
+				if(powerups.isEmpty()){activity = Ship::WAIT;break;}
+				if(health >= SHIP_MAX_HEALTH / 2){activity = Ship::FIGHT;break;}
+				if(bulletsRemaining <= 5){activity = Ship::AMMO;break;}	
+				printf("Ship is searching for health\n");
+				angle = getAngleToPowerup(Ship::HEALTH);
+				if(isAllowedFire())fireBullet();
+				else timeToFire -= dt;
+				break;
+			
+			//WAIT FOR STATE CHANGE	
+			}case(WAIT):{
+				printf("Ship is waiting\n");
+				if(!powerups.isEmpty() && bulletsRemaining <= 5){activity = Ship::AMMO;break;}
+				if(!powerups.isEmpty() && health < SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
+				if(!asteroids.isEmpty()){activity = Ship::FIGHT;break;}
+				break;
+			}
 		}
-		
 	}else{
 	//deals with manual firing
 		if(isAllowedFire())fireBullet();

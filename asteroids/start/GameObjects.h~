@@ -63,7 +63,7 @@ public:
 	void fireBullet();
 	bool isAllowedFire();
 	bool isTakingDamage();
-	Vector2f getDistanceToClosestPowerup(const int type);
+	float getAngleToPowerup(const int type);
 };
 
 // ======================================

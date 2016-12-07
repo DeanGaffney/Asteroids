@@ -45,7 +45,7 @@ class Ship: public BaseGameObject {
 	float timeToFire;
 	float shieldTimer;
 public:
-	enum Activity {FIGHT,FLIGHT,AMMO,HEALTH};
+	enum Activity {FIGHT,FLIGHT,AMMO,HEALTH,WAIT};
 	Activity activity;
 	
 	bool hasTarget;
