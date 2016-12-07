@@ -116,7 +116,7 @@ void update() {
 	
 	//have a timer to calculate have a chance in spawning powerup as player may be out of bullets
 	powerupSpawnTime -= dt;
-	if(powerupSpawnTime <= 0 && canSpawnPowerup(10)){
+	if(powerupSpawnTime <= 0){
 		spawnPowerup();
 		powerupSpawnTime = POWERUP_SPAWN_TIME;
 	}else if(powerupSpawnTime <= 0){
@@ -238,7 +238,7 @@ void spawnAsteroid(){
 }
 
 bool canSpawnPowerup(const int chance){
-	return (randomInt(0,chance) > chance /2);			//TWEAK THIS FOR CHANCE OF SPAWNING POWERUP
+	return (randomInt(0,chance) > chance - 2);			//TWEAK THIS FOR CHANCE OF SPAWNING POWERUP
 }
 
 void spawnPowerup(){

@@ -41,7 +41,7 @@ const float POWERUP_MIN_SPEED = 0.1f*SPEED;
 const float POWERUP_SCALE = 0.1;
 const float POWERUP_SIZE = 0.5;
 const float POWERUP_EXPIRE_TIME = 120;
-const float POWERUP_SPAWN_TIME = 240;
+const float POWERUP_SPAWN_TIME = 100;
 const int MAX_POWERUP_TYPES = 4;
 const float SPAWN_INVINCIBILITY_TIME = 1.0f;
 

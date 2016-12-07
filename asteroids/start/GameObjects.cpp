@@ -44,7 +44,7 @@ void Ship::reset() {
 	BaseGameObject::reset();
 	
 	autoNavigation = true;
-	activity = Ship::FIGHT;
+	activity = Ship::FLIGHT;
 	
 	hasTarget = false;
 	
@@ -89,13 +89,13 @@ void Ship::update(float dt) {
 			
 			//SCAVENGE AMMO
 			}case(AMMO):{
-				if(!isTypeInPowerups(Powerup::AMMO)){activity = Ship::WAIT;break;}
+				if(!isTypeInPowerups(Powerup::AMMO)){activity = Ship::FLIGHT;break;}
 				if(bulletsRemaining > 5){activity = Ship::FIGHT;break;}
 				if(health <= SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
 
 				printf("Ship is searching for ammo\n");
 				printf("Bullets remaining: %d\n",bulletsRemaining);
-				angle = getAngleToPowerup(Ship::AMMO);
+				angle = getAngleToPowerup(Powerup::AMMO);
 				printf("Angle to rotate to ammo is : %f\n",angle);
 				if(isAllowedFire())fireBullet();
 				else timeToFire -= dt;
@@ -103,21 +103,34 @@ void Ship::update(float dt) {
 			
 			//SCAVENGE HEALTH
 			}case(HEALTH):{
-				if(!isTypeInPowerups(Powerup::HEALTH)){activity = Ship::WAIT;break;}
+				if(!isTypeInPowerups(Powerup::HEALTH)){activity = Ship::FLIGHT;break;}
 				if(health >= SHIP_MAX_HEALTH / 2){activity = Ship::FIGHT;break;}
 				if(bulletsRemaining <= 5){activity = Ship::AMMO;break;}	
 				printf("Ship is searching for health\n");
-				angle = getAngleToPowerup(Ship::HEALTH);
+				angle = getAngleToPowerup(Powerup::HEALTH);
 				if(isAllowedFire())fireBullet();
 				else timeToFire -= dt;
 				break;
 			
-			//WAIT FOR STATE CHANGE	
-			}case(WAIT):{
-				printf("Ship is waiting\n");
+			//EVADE ASTEROIDS 
+			}case(FLIGHT):{
+				printf("In flight mode bullets remaining is : %d\n",bulletsRemaining);
+				printf("Ship is in flight mode\n");
 				if(isTypeInPowerups(Powerup::AMMO) && bulletsRemaining <= 5){activity = Ship::AMMO;break;}
 				if(isTypeInPowerups(Powerup::HEALTH) && health < SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
 				if(!asteroids.isEmpty() && bulletsRemaining > 5){activity = Ship::FIGHT;break;}
+				for(int k = 0;k < asteroids.size();k++){
+					if(isMovingTowardsPoint(position,asteroids[k].position,asteroids[k].velocity)){
+						//ship needs to move out of the way if i follow the same velocity it cant hit me
+						velocity = asteroids[k].velocity;	
+						float angleToRotate = atan2f(asteroids[k].position.y - position.y,asteroids[k].position.x - position.x);
+						angle = radToDeg(angleToRotate);
+					}
+				}
+				break;
+			//WAIT FOR STATE CHANGE	
+			}case(WAIT):{
+				if(!asteroids.isEmpty()){activity = Ship::FIGHT;break;}
 				break;
 			}
 		}
