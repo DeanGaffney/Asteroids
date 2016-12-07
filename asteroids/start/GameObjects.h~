@@ -32,7 +32,9 @@ public:
 	virtual void render() = 0;
 	virtual void update(float dt);
 	virtual void reset();
-	float radius;					//used for circle collision detection
+	virtual void wrap();
+	float radius;						//used for circle collision detection
+	float spawnInvincibilityTime;		//used for powerups and not destroying newly spawned asteroids
 };
 
 // ======================================
@@ -41,14 +43,27 @@ public:
 
 class Ship: public BaseGameObject {
 	float timeToFire;
+	float shieldTimer;
+public:
+	enum Activity {FIGHT,FLIGHT,AMMO,HEALTH};
+	Activity activity;
+	
+	bool hasTarget;
+	bool autoNavigation;
+	float damageRecoveryTimer;
+	bool isShieldActive;
+	float shieldSize;
 	int health;
 	int bulletsRemaining;
-
-public:
 	bool fire;
 	void render();
 	void update(float dt);
 	void reset();
+	void wrap();
+	void fireBullet();
+	bool isAllowedFire();
+	bool isTakingDamage();
+	Vector2f getDistanceToClosestPowerup(const int type);
 };
 
 // ======================================
@@ -84,9 +99,29 @@ public:
 	void update(float dt);
 	void setNextType();
 	int getEnumIndex();
+	void wrap();
 };
 
 typedef Pool<Asteroid> AsteroidPool;
+
+class Powerup: public BaseGameObject{
+	float timeToDie;
+public:
+	enum Type {HEALTH,AMMO,REPEL,SHIELD};
+	Type type;
+	
+	float size;
+	void render();
+	void reset();
+	void update(float dt);
+	void wrap();
+	void giveShipHealth(Ship & ship);
+	void giveShipBullets(Ship & ship);
+	void repelAsteroids(Ship & ship);
+	void giveShipShield(Ship & ship);
+};
+
+typedef Pool<Powerup> PowerupPool;
 
 
 #endif

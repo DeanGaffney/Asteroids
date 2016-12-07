@@ -16,7 +16,10 @@
 	    	#include <GL/glfw.h>
 	    #else				            // linux
 		    #include <GL/gl.h>
-	    	#include <GL/glu.h>
+	    	#include <GL/glu.h>         
+
+			#include <GL/glut.h>  
+			#include <GL/glfw.h> 
 		    #include <GL/freeglut.h>
 		    #include <GL/glfw.h>
 	    #endif
@@ -63,4 +66,6 @@ void update();
 void getInput();
 
 void drawCircle(const Vector2f c = Vector2f::ZERO, float r=1.0f);
+void renderHealthBar();
+void drawRectangle(Vector2f position, float width, float height);
 #endif

@@ -46,4 +46,19 @@ void drawCircle(const Vector2f c, float r) {
 	glPopMatrix();
 }
 
+void drawRectangle(Vector2f position, float width, float height){
+	glPushMatrix();
+	glTranslatef(position.x,position.y,0);
+	glScalef(width,height,1);
+	glBegin(GL_QUADS);      
+   		glVertex3f(0.0, 0.0, 0.0);
+    	glVertex3f(1.0, 0.0, 0.0);
+    	glVertex3f(1.0, 1.0, 0.0);
+    	glVertex3f(0.0, 1.0, 0.0);
+    glEnd();
+	glPopMatrix();
+}
+
+
+
 #endif
