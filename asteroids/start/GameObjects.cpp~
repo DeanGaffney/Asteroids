@@ -54,6 +54,7 @@ void Ship::reset() {
 	timeToFire = 0;
 	
 	health = SHIP_MAX_HEALTH;
+
 	bulletsRemaining = SHIP_MAX_BULLETS;
 	
 	//set up shield
@@ -105,7 +106,7 @@ void Ship::update(float dt) {
 			}case(HEALTH):{
 				if(!isTypeInPowerups(Powerup::HEALTH)){activity = Ship::FLIGHT;break;}
 				if(health >= SHIP_MAX_HEALTH / 2){activity = Ship::FIGHT;break;}
-				if(bulletsRemaining <= 5){activity = Ship::AMMO;break;}	
+
 				printf("Ship is searching for health\n");
 				angle = getAngleToPowerup(Powerup::HEALTH);
 				if(isAllowedFire())fireBullet();
@@ -123,7 +124,7 @@ void Ship::update(float dt) {
 					if(isMovingTowardsPoint(position,asteroids[k].position,asteroids[k].velocity)){
 						//ship needs to move out of the way if i follow the same velocity it cant hit me
 						velocity = asteroids[k].velocity;	
-						float angleToRotate = atan2f(position.y - asteroids[k].position.y, position.x - asteroids[k].position.x);
+						float angleToRotate = atan2f(asteroids[k].position.y - position.y,asteroids[k].position.x - position.x);
 						angle = radToDeg(angleToRotate);
 					}
 				}
