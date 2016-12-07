@@ -64,6 +64,7 @@ public:
 	bool isAllowedFire();
 	bool isTakingDamage();
 	float getAngleToPowerup(const int type);
+	bool isTypeInPowerups(const int type);
 };
 
 // ======================================

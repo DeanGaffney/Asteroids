@@ -149,9 +149,6 @@ bool isPointInsideCircle(const Vector2f point,const Vector2f center,const float 
 }
 
 bool circleCollision(const float distance, const float radius1, const float radius2){
-	//printf("Distance from circle centers %f\n", distance);
-	//printf("Radius of shield shield is : %f\n", radius1);
-	//printf("radius of asteroid is : %f\n",radius2);
 	return (radius1 + radius2 > distance) ? true : false;
 }
 

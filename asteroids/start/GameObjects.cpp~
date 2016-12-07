@@ -67,26 +67,29 @@ void Ship::reset() {
 void Ship::update(float dt) {
 	// TODO - update position (using base class)
 	BaseGameObject::update(dt);
-
+	
 	if(autoNavigation){
 		fire = true;
 		switch(activity){
 			//FIGHT ASTEROIDS
 			case(FIGHT):{
+			printf("In FIGHT state, bullets left is : %d\n",bulletsRemaining);
 				if(asteroids.isEmpty()){activity = Ship::WAIT;break;}
-				if(bulletsRemaining < 5){activity = Ship::AMMO;break;}
+				if(bulletsRemaining <= 5){activity = Ship::AMMO;break;}
 				if(health < SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
 				printf("Ship is fighting\n");
 				//the reason i use index 0 is becasue the Pool class will always replace a dead index so 0 will always be used unless all asteroids are destroyed
-				float angleToRotate = atan2f(asteroids[0].position.y - position.y,asteroids[0].position.x - position.x);
-				angle = radToDeg(angleToRotate);
-				if(isAllowedFire())fireBullet();
-				else timeToFire -= dt;
+				for(int k = 0; k < asteroids.size();k++){
+					float angleToRotate = atan2f(asteroids[k].position.y - position.y,asteroids[k].position.x - position.x);
+					angle = radToDeg(angleToRotate);
+					if(isAllowedFire())fireBullet();
+					else timeToFire -= dt;
+				}
 				break;
 			
 			//SCAVENGE AMMO
 			}case(AMMO):{
-				if(powerups.isEmpty()){activity = Ship::WAIT;break;}
+				if(!isTypeInPowerups(Powerup::AMMO)){activity = Ship::WAIT;break;}
 				if(bulletsRemaining > 5){activity = Ship::FIGHT;break;}
 				if(health <= SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
 
@@ -100,7 +103,7 @@ void Ship::update(float dt) {
 			
 			//SCAVENGE HEALTH
 			}case(HEALTH):{
-				if(powerups.isEmpty()){activity = Ship::WAIT;break;}
+				if(!isTypeInPowerups(Powerup::HEALTH)){activity = Ship::WAIT;break;}
 				if(health >= SHIP_MAX_HEALTH / 2){activity = Ship::FIGHT;break;}
 				if(bulletsRemaining <= 5){activity = Ship::AMMO;break;}	
 				printf("Ship is searching for health\n");
@@ -112,9 +115,9 @@ void Ship::update(float dt) {
 			//WAIT FOR STATE CHANGE	
 			}case(WAIT):{
 				printf("Ship is waiting\n");
-				if(!powerups.isEmpty() && bulletsRemaining <= 5){activity = Ship::AMMO;break;}
-				if(!powerups.isEmpty() && health < SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
-				if(!asteroids.isEmpty()){activity = Ship::FIGHT;break;}
+				if(isTypeInPowerups(Powerup::AMMO) && bulletsRemaining <= 5){activity = Ship::AMMO;break;}
+				if(isTypeInPowerups(Powerup::HEALTH) && health < SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
+				if(!asteroids.isEmpty() && bulletsRemaining > 5){activity = Ship::FIGHT;break;}
 				break;
 			}
 		}
@@ -135,6 +138,13 @@ void Ship::update(float dt) {
 		shieldTimer = SHIP_SHIELD_TIME;
 	}
 	if(damageRecoveryTimer > 0 )damageRecoveryTimer -= dt;
+}
+
+bool Ship::isTypeInPowerups(const int type){
+	for(int k = 0; k < powerups.size();k++){
+		if(powerups[k].type == type)return true;
+	}
+	return false;
 }
 
 /*

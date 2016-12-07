@@ -11,7 +11,7 @@
 Ship ship;
 BulletPool bullets(1000);
 AsteroidPool asteroids(20);
-PowerupPool powerups(20);
+PowerupPool powerups(200);
 float powerupSpawnTime = POWERUP_SPAWN_TIME;
 float asteroidSpawnTime = ASTEROID_SPAWN_TIME;
 
