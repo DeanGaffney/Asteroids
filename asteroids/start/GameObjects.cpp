@@ -122,7 +122,7 @@ void Ship::update(float dt) {
 				for(int k = 0;k < asteroids.size();k++){
 					if(isMovingTowardsPoint(position,asteroids[k].position,asteroids[k].velocity)){
 						//ship needs to move out of the way if i follow the same velocity it cant hit me
-						velocity = asteroids[k].velocity;	
+						velocity = asteroids[k].velocity.normal() * SHIP_MAX_SPEED / 2;	
 						float angleToRotate = atan2f(asteroids[k].position.y - position.y,asteroids[k].position.x - position.x);
 						angle = radToDeg(angleToRotate);
 					}

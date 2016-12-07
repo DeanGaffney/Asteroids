@@ -106,7 +106,6 @@ void Ship::update(float dt) {
 			}case(HEALTH):{
 				if(!isTypeInPowerups(Powerup::HEALTH)){activity = Ship::FLIGHT;break;}
 				if(health >= SHIP_MAX_HEALTH / 2){activity = Ship::FIGHT;break;}
-
 				printf("Ship is searching for health\n");
 				angle = getAngleToPowerup(Powerup::HEALTH);
 				if(isAllowedFire())fireBullet();
