@@ -13,6 +13,8 @@ void BaseGameObject::update(float dt) {
 	
 	//anglular movement
 	angle += dt*angularVelocity;
+	if(angle < 0)angle += 360;
+	if(angle > 360) angle -= 360;
 }
 
 void BaseGameObject::reset() {
@@ -44,7 +46,7 @@ void Ship::reset() {
 	BaseGameObject::reset();
 	
 	autoNavigation = true;
-	activity = Ship::FLIGHT;
+	activity = Ship::FIGHT;
 	
 	hasTarget = false;
 	
@@ -79,11 +81,17 @@ void Ship::update(float dt) {
 				if(bulletsRemaining <= 5){activity = Ship::AMMO;break;}
 				if(health < SHIP_MAX_HEALTH / 2){activity = Ship::HEALTH;break;}
 				printf("Ship is fighting\n");
-				//the reason i use index 0 is becasue the Pool class will always replace a dead index so 0 will always be used unless all asteroids are destroyed
+
 				for(int k = 0; k < asteroids.size();k++){
-					float angleToRotate = atan2f(asteroids[k].position.y - position.y,asteroids[k].position.x - position.x);
-					angle = radToDeg(angleToRotate);
-					if(isAllowedFire())fireBullet();
+					float angleToRotate = radToDeg(atan2f(asteroids[k].position.y - position.y,asteroids[k].position.x - position.x)) - angle;
+					
+					printf("Angle to rotate is : %f\n",angleToRotate);
+					printf("Ships angle is :%f\n",angle);
+
+					angularVelocity = SHIP_MAX_ANGULAR_VELOCITY * sgn(zeroClamp(angleToRotate,1));
+
+					printf("Angular velocity is : %f\n",angularVelocity);
+					if(isAllowedFire() && angleToRotate < 1 && angleToRotate > -1)fireBullet();
 					else timeToFire -= dt;
 				}
 				break;

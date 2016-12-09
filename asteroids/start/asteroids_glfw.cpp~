@@ -114,7 +114,7 @@ void Asteroid::render () {
 	glPopMatrix();	
 }
 void getInput() {
-	
+
 	if (glfwGetKey(GLFW_KEY_ESC) || !glfwGetWindowParam(GLFW_OPENED)) {
 		gameState = GAME_QUIT;
 		return;
@@ -124,23 +124,26 @@ void getInput() {
 		ship.reset();
     }
 	
-    ship.acceleration = Vector2f::ZERO;
-	if (glfwGetKey(GLFW_KEY_UP)) {
-		float rad = degToRad(ship.angle);
-		ship.acceleration = SHIP_MAX_ACCELERATION*Vector2f(cos(rad),sin(rad));
-    } else if (glfwGetKey(GLFW_KEY_DOWN)) {
-		ship.velocity *= 0.1f;
-	}
+	if(ship.autoNavigation){
+    	ship.acceleration = Vector2f::ZERO;
+		if (glfwGetKey(GLFW_KEY_UP)) {
+			float rad = degToRad(ship.angle);
+			ship.acceleration = SHIP_MAX_ACCELERATION*Vector2f(cos(rad),sin(rad));
+    	} else if (glfwGetKey(GLFW_KEY_DOWN)) {
+			ship.velocity *= 0.1f;
+		}
 	
-    if (glfwGetKey(GLFW_KEY_LEFT)) {
-		ship.angularVelocity = SHIP_MAX_ANGULAR_VELOCITY;
-    } else if (glfwGetKey(GLFW_KEY_RIGHT)) {
-		ship.angularVelocity = -SHIP_MAX_ANGULAR_VELOCITY;
-    } else {
-		ship.angularVelocity = 0;
-	}
+    	if (glfwGetKey(GLFW_KEY_LEFT)) {
+			ship.angularVelocity = SHIP_MAX_ANGULAR_VELOCITY;
+    	} else if (glfwGetKey(GLFW_KEY_RIGHT)) {
+			ship.angularVelocity = -SHIP_MAX_ANGULAR_VELOCITY;
+    	} else{
+			ship.angularVelocity = 0;
+		}
  
-	ship.fire = glfwGetKey(GLFW_KEY_SPACE);
+		ship.fire = glfwGetKey(GLFW_KEY_SPACE);
+	}
+	//toggle auto navigation
 	if(glfwGetKey('A'))ship.autoNavigation = !ship.autoNavigation;
 	
 }

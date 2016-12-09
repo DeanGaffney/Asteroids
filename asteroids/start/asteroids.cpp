@@ -41,7 +41,7 @@ int main() {
 				ship.velocity = Vector2f::ZERO;
 				ship.isShieldActive = true;				//FOR DEBUGGING REMOVE WHEN DONE
 				spawnAsteroid();
-				
+				//for(int k=randomInt(1,20); k; --k)spawnAsteroid();
 				spawnPowerup();
 				changeGameState(LEVEL_PLAY);
 				break;
