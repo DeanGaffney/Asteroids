@@ -1,5 +1,5 @@
 ## Asteroids
-###__*A C++ implementation of Asteroids using opengl*__
+### __*A C++ implementation of Asteroids using opengl*__
 
 ### Author - __*Dean Gaffney (20067423)*__
 ### Subject - __*Console Game Development 2*__
